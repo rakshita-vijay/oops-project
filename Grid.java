@@ -30,6 +30,7 @@ public class Grid extends JFrame {
 
     JPanel menuPanel = new JPanel();
     menuPanel.setBackground(Color.black);
+    // menuPanel.setBackground(new Color(0, 0, 0, 128)); // 50% opacity
     menuPanel.setBounds(0, 40, 1500, 110);
     // this.add(menuPanel);
     topStrip.add(menuPanel);
@@ -67,7 +68,7 @@ public class Grid extends JFrame {
     // JPanel bottomBlueStrip = new JPanel();
     // bottomBlueStrip.setBounds(0, 860, 1500, 35);
     // bottomBlueStrip.setBackground(Color.blue);
-    // bottomStrip.add(bottomBlueStrip, new Integer(1));
+    // bottomStrip.add(bottomBlueStrip);
 
     // JLabel copyrightText = new JLabel("Copyright ©VARS");
     // copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
@@ -80,11 +81,12 @@ public class Grid extends JFrame {
     JPanel bottomBlueStrip = new JPanel();
     bottomBlueStrip.setBounds(0, 860, 1500, 35);
     bottomBlueStrip.setBackground(Color.blue);
+    // bottomBlueStrip.setOpaque(false);
     this.add(bottomBlueStrip);
 
-    JLabel copyrightText = new JLabel("Copyright ©VARS");
+    JLabel copyrightText = new JLabel("Copyright ©VARS"); // not showing up - why??????
     copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
-    copyrightText.setForeground(Color.black);
+    copyrightText.setForeground(Color.pink);
     copyrightText.setBounds(10, 865, 500, 20);
     this.add(copyrightText, new Integer(1));
 
