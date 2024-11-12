@@ -8,18 +8,26 @@ public class Grid extends JFrame {
     this.setLayout(null); // dunno what happens, supposed to be there
     this.setBounds(0, 20, 1400, 950); // x,y of screen; h,w of JFrame
 
+    JLayeredPane finalLayer = new JLayeredPane();
+    finalLayer.setBounds(0, 0, 1550, 950);
+
+    JLayeredPane basicGrid = new JLayeredPane();
+    basicGrid.setBounds(30, 160, 1400, 700);
+
     int rows = 40;
     int columns = 80;
 
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(rows, columns));
-    panel.setBounds(30, 160, 1400, 700); // x,y WRT JFrame; h,w of entire JPanel (button / boxes)
+    panel.setBounds(0, 0, 1400, 700); // x,y WRT JFrame; h,w of entire JPanel (button / boxes)
 
     for (int i = 1; i <= (rows * columns); i++) { // i <= x, where x is the number of buttons needed
       JButton button = new JButton();
       panel.add(button);
     }
-    this.add(panel, BorderLayout.CENTER); // BorderLayout.CENTER does not matter here
+
+    basicGrid.add(panel, BorderLayout.CENTER);
+    finalLayer.add(basicGrid);  // BorderLayout.CENTER does not matter here
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -56,7 +64,7 @@ public class Grid extends JFrame {
     // this.add(logoLabel);
     topStrip.add(logoLabel, new Integer(1));
 
-    this.add(topStrip);
+    finalLayer.add(topStrip);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -76,19 +84,21 @@ public class Grid extends JFrame {
     // copyrightText.setBounds(10, 860, 200, 20);
     // bottomStrip.add(copyrightText, new Integer(1));
 
-    // this.add(bottomStrip);
+    // finalLayer.add(bottomStrip);
 
     JPanel bottomBlueStrip = new JPanel();
     bottomBlueStrip.setBounds(0, 860, 1500, 35);
     bottomBlueStrip.setBackground(Color.blue);
     // bottomBlueStrip.setOpaque(false);
-    this.add(bottomBlueStrip);
+    finalLayer.add(bottomBlueStrip);
 
     JLabel copyrightText = new JLabel("Copyright ©VARS"); // not showing up - why??????
     copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
-    copyrightText.setForeground(Color.pink);
+    copyrightText.setForeground(Color.WHITE);
     copyrightText.setBounds(10, 865, 500, 20);
-    this.add(copyrightText, new Integer(1));
+    finalLayer.add(copyrightText, new Integer(1));
+
+    this.add(finalLayer);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
