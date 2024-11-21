@@ -836,10 +836,10 @@ public class Test extends JFrame{
                         }
                         else {
                             JOptionPane.showMessageDialog(project, "Invalid placement of opening!", "Alert", JOptionPane.WARNING_MESSAGE);
-                         }
+                        }
                             finalLayer.add(setOfOpenings, Integer.valueOf(6));
                         }
-                     catch (NumberFormatException ex){
+                    catch (NumberFormatException ex){
                         //Shows a warning dialog box if the values entered aren't numeric
                         JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
                     }
