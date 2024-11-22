@@ -1,3 +1,5 @@
+////22nd Nov, 13:45 updated
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +79,9 @@ public class Test extends JFrame{
 
     public boolean forHoriWindow(JLabel window,ArrayList<Point[]>setOfBorders){
         boolean isOn = false;
+        System.out.println(setOfBorders.size());
         for(int i=0;i<setOfBorders.size();i++){
+            System.out.println(setOfBorders.get(i)[0].toString() + "and " + setOfBorders.get(i)[1].toString() );
             if(window.getX()>setOfBorders.get(i)[0].getX() && (window.getX() + window.getWidth())<setOfBorders.get(i)[1].getX() && window.getY() == setOfBorders.get(i)[0].getY() && setOfBorders.get(i)[0].getY() == setOfBorders.get(i)[1].getY()){
                 isOn = true;
                 System.out.println("horiwin");
@@ -90,6 +94,7 @@ public class Test extends JFrame{
     public boolean forVertiWindow(JLabel window,ArrayList<Point[]>setOfBorders ){
         boolean isOn = false;
         for(int i=0;i<setOfBorders.size();i++){
+            System.out.println(setOfBorders.get(i)[0].toString() + "and " + setOfBorders.get(i)[1].toString() );
             if(window.getY()>setOfBorders.get(i)[1].getY() && (window.getY()+window.getHeight())<setOfBorders.get(i)[0].getY()&& window.getX()==setOfBorders.get(i)[0].getX() && setOfBorders.get(i)[0].getX()==setOfBorders.get(i)[1].getX()){
                 isOn=true;
                 break;
@@ -305,6 +310,7 @@ public class Test extends JFrame{
                                     //Edges and borders go from left to right and down to up(in the conventional coordinate system)
                                     Point[] edge1 =  {cornersOfOneRoom[0],cornersOfOneRoom[1]};
                                     setOfEdges.add(edge1);
+
                                     setOfRoomEdges[0] = edge1;
                                     Point[] edge2 =  {cornersOfOneRoom[2],cornersOfOneRoom[1]};
                                     setOfEdges.add(edge2);
@@ -316,26 +322,33 @@ public class Test extends JFrame{
                                     setOfEdges.add(edge4);
                                     setOfRoomEdges[3] = edge4;
 
-
+                                    System.out.println(setOfEdges.size());
                                     for(int edgeInRoom=0;edgeInRoom<4;edgeInRoom++){
+                                        System.out.println("first for entered");
                                       for(int border=0;border<setOfBorders.size();border++){
+                                        System.out.println("second for entered");
                                         if(setOfRoomEdges[edgeInRoom][0].getY()==setOfBorders.get(border)[0].getY() &&
                                         setOfRoomEdges[edgeInRoom][0].getY()==setOfRoomEdges[edgeInRoom][1].getY() && setOfBorders.get(border)[0].getY()==setOfBorders.get(border)[1].getY() ){//The edge and the border are both horizontal, on the same level
                                             //1
+                                            System.out.println("Entered case where both are horizontal, on the same line");
                                             if(setOfRoomEdges[edgeInRoom][0].getX()<setOfBorders.get(border)[0].getX() && setOfRoomEdges[edgeInRoom][1].getX()>setOfBorders.get(border)[1].getX()){
+                                                System.out.println("Entered case where edge is completely inside border ");
                                                 setOfBorders.remove(border);
                                                 Point[] tempbord1 = {setOfRoomEdges[edgeInRoom][0],setOfBorders.get(border)[0]};
                                                 setOfBorders.add(tempbord1);
                                                 Point[] tempbord2 = {setOfBorders.get(border)[1],setOfRoomEdges[edgeInRoom][1]};
                                                 setOfBorders.add(tempbord2);
 
+
                                             }
                                             //2
                                             else if(setOfRoomEdges[edgeInRoom][0].getX()==setOfBorders.get(border)[1].getX() || setOfRoomEdges[edgeInRoom][1].getX()==setOfBorders.get(border)[0].getX()){//attached to each other at the vertices
+                                                System.out.println("Entered case where they are continuing from each other");
                                                 setOfBorders.add(setOfRoomEdges[edgeInRoom]);
                                             }
                                             //3
                                             else if(setOfRoomEdges[edgeInRoom][0].getX()<setOfBorders.get(border)[0].getX() && setOfRoomEdges[edgeInRoom][1].getX()<setOfBorders.get(border)[1].getX()){
+                                                System.out.println("Entered case where they are discongrous");
                                                 setOfBorders.remove(border);
                                                 Point[] tempbord1 = {setOfRoomEdges[edgeInRoom][0],setOfBorders.get(border)[0]};
                                                 Point[] tempbord2 = {setOfRoomEdges[edgeInRoom][1],setOfBorders.get(border)[1]};
@@ -345,6 +358,7 @@ public class Test extends JFrame{
                                             }
                                             //4
                                             else if(setOfRoomEdges[edgeInRoom][0].getX()>setOfBorders.get(border)[0].getX() && setOfRoomEdges[edgeInRoom][1].getX()>setOfBorders.get(border)[1].getX()){
+                                                System.out.println("Bhaad me ja laude");
                                                 Point[] tempbord1 = {setOfBorders.get(border)[0],setOfRoomEdges[edgeInRoom][0]};
                                                 Point[] tempbord2 = {setOfBorders.get(border)[1],setOfRoomEdges[edgeInRoom][1]};
                                                 setOfBorders.add(tempbord1);
@@ -355,11 +369,13 @@ public class Test extends JFrame{
                                             //5
                                             else{//The edges are just completely apart; so the new edge will become a border, too// or do i just leave it alone, because we're not sure if there's another border that's overlapping
                                                 setOfBorders.add(setOfRoomEdges[edgeInRoom]);
+                                                System.out.println("Entered case where both are separate");
                                             }
                                         }
 
                                         else if(setOfRoomEdges[edgeInRoom][0].getX()==setOfBorders.get(border)[0].getX()&& setOfRoomEdges[edgeInRoom][0].getX()==setOfRoomEdges[edgeInRoom][1].getX() && setOfBorders.get(border)[0].getX()==setOfBorders.get(border)[1].getX()){//border and edge on the same vertical line
                                             //1
+                                            System.out.println("second main case entered");
                                             if(setOfRoomEdges[edgeInRoom][0].getY()<=setOfBorders.get(border)[0].getY() && setOfRoomEdges[edgeInRoom][1].getY()>setOfBorders.get(border)[1].getY()){
                                                 setOfBorders.remove(border);
                                                 Point[] tempbord1 = {setOfRoomEdges[edgeInRoom][0],setOfBorders.get(border)[0]};
@@ -400,6 +416,7 @@ public class Test extends JFrame{
 
                                         else{
                                             setOfBorders.add(setOfRoomEdges[edgeInRoom]);
+                                            System.out.println("Main Case 3 entered");
                                         }
 
 
@@ -865,7 +882,7 @@ public class Test extends JFrame{
         // bottomBlueStrip.setBackground(Color.blue);
         // bottomStrip.add(bottomBlueStrip);
 
-        // JLabel copyrightText = new JLabel("Copyright ©️VARS");
+        // JLabel copyrightText = new JLabel("Copyright ©VARS");
         // copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
         // copyrightText.setForeground(Color.WHITE);
         // copyrightText.setBounds(10, 860, 200, 20);
@@ -879,7 +896,7 @@ public class Test extends JFrame{
         // bottomBlueStrip.setOpaque(false);
         finalLayer.add(bottomBlueStrip);
 
-        JLabel copyrightText = new JLabel("Copyright ©️VARS"); // not showing up - why??????
+        JLabel copyrightText = new JLabel("Copyright ©VARS"); // not showing up - why??????
         copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
         copyrightText.setForeground(Color.WHITE);
         copyrightText.setBounds(10, 865, 500, 20);
