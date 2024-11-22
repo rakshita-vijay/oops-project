@@ -1,5 +1,3 @@
-////Hi Dumbfuck 123 this my sh
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,8 +78,10 @@ public class Test extends JFrame{
     public boolean forHoriWindow(JLabel window,ArrayList<Point[]>setOfBorders){
         boolean isOn = false;
         for(int i=0;i<setOfBorders.size();i++){
-            if(window.getX()>setOfBorders.get(i)[0].getX() && (window.getX() + window.getWidth())<setOfBorders.get(i)[1].getX() ){
+            if(window.getX()>setOfBorders.get(i)[0].getX() && (window.getX() + window.getWidth())<setOfBorders.get(i)[1].getX() && window.getY() == setOfBorders.get(i)[0].getY() && setOfBorders.get(i)[0].getY() == setOfBorders.get(i)[1].getY()){
                 isOn = true;
+                System.out.println("horiwin");
+                break;
             }
         }
         return isOn;
@@ -90,8 +90,9 @@ public class Test extends JFrame{
     public boolean forVertiWindow(JLabel window,ArrayList<Point[]>setOfBorders ){
         boolean isOn = false;
         for(int i=0;i<setOfBorders.size();i++){
-            if(window.getY()>setOfBorders.get(i)[0].getY() && (window.getY()+window.getHeight())<setOfBorders.get(i)[1].getY()){
+            if(window.getY()>setOfBorders.get(i)[1].getY() && (window.getY()+window.getHeight())<setOfBorders.get(i)[0].getY()&& window.getX()==setOfBorders.get(i)[0].getX() && setOfBorders.get(i)[0].getX()==setOfBorders.get(i)[1].getX()){
                 isOn=true;
+                break;
             }
         }
         return isOn;
@@ -100,7 +101,7 @@ public class Test extends JFrame{
     public boolean forHoriDoor(JLabel door,ArrayList<Point[]> setOfEdges){
         boolean isOn = false;
         for(int i=0;i<setOfEdges.size();i++){
-            if(door.getX()>setOfEdges.get(i)[0].getX() && (door.getX()+door.getWidth())<setOfEdges.get(i)[1].getX()){
+            if(door.getX()>setOfEdges.get(i)[0].getX() && (door.getX()+door.getWidth())<setOfEdges.get(i)[1].getX() && door.getY()==setOfEdges.get(i)[0].getY() && setOfEdges.get(i)[0].getY() == setOfEdges.get(i)[1].getY() ){
                 isOn =true;
             }
         }
@@ -110,7 +111,7 @@ public class Test extends JFrame{
     public boolean forVertiDoor(JLabel door,ArrayList<Point[]> setOfEdges){
         boolean isOn = false;
         for(int i=0;i<setOfEdges.size();i++){
-            if(door.getY()>setOfEdges.get(i)[0].getY() && (door.getY()+ door.getWidth())<setOfEdges.get(i)[1].getY()){
+            if(door.getY()>setOfEdges.get(i)[1].getY() && (door.getY()+ door.getWidth())<setOfEdges.get(i)[0].getY() && door.getX()==setOfEdges.get(i)[0].getX()&& setOfEdges.get(i)[0].getY()==setOfEdges.get(i)[1].getY()){
                 isOn = true;
             }
         }
@@ -203,7 +204,6 @@ public class Test extends JFrame{
         setOfFurniture.setBounds(30, 160, 1400, 700);
         JLayeredPane setOfFixtures = new JLayeredPane();
         setOfFixtures.setBounds(30, 160, 1400, 700);
-
 
         JLayeredPane setOfOpenings = new JLayeredPane();
         setOfOpenings.setBounds(30, 160, 1400, 700);
@@ -385,7 +385,9 @@ public class Test extends JFrame{
                                                 Point[] tempbord1 = {setOfBorders.get(border)[0],setOfRoomEdges[edgeInRoom][0]};
                                                 Point[] tempbord2 = {setOfBorders.get(border)[1],setOfRoomEdges[edgeInRoom][1]};
                                                 setOfBorders.add(tempbord1);
+                                                System.out.println(setOfBorders);
                                                 setOfBorders.add(tempbord2);
+                                                System.out.println(setOfBorders);
 
                                             }
 
@@ -399,6 +401,7 @@ public class Test extends JFrame{
                                         else{
                                             setOfBorders.add(setOfRoomEdges[edgeInRoom]);
                                         }
+
 
                                       }
 
@@ -600,6 +603,7 @@ public class Test extends JFrame{
                     case 4 -> 35;
                     default -> throw new IllegalStateException("Unexpected value: " + selection);
                 };
+                setOfBorders.toString();
                 JTextField xCoord = new JTextField(5);
                 xCoord.setSize(50, 30);
                 JTextField yCoord = new JTextField(5);
@@ -776,8 +780,7 @@ public class Test extends JFrame{
                     case 0 -> 20;
                     case 1 -> 4;
                     case 2 -> 20;
-                    case 3 ->4;
-
+                    case 3 -> 4;
                     default -> throw new IllegalStateException("Unexpected value: " + selection);
                 };
                 int height = switch (selection) {
@@ -785,10 +788,8 @@ public class Test extends JFrame{
                     case 1 -> 20;
                     case 2 -> 4;
                     case 3 -> 20;
-
                     default -> throw new IllegalStateException("Unexpected value: " + selection);
                 };
-
 
                 JTextField xCoord = new JTextField(5);
                 xCoord.setSize(50, 30);
@@ -815,10 +816,15 @@ public class Test extends JFrame{
                             case 3 -> forVertiWindow(opening,setOfBorders);
                             default ->forHoriWindow(opening,setOfBorders);
                         };
-                        //Iterates over every already existing room and checks for overlaps
-                        if(isValid){
-                            setOfOpenings.add(opening);
 
+                        System.out.println(isValid);
+                        //Iterates over every already existing room and checks for overlaps
+                        if (opening.getX() < 0 || opening.getY() < 0 || opening.getX() + opening.getWidth() > 1500 || opening.getY() + opening.getHeight() > 600){
+                            JOptionPane.showMessageDialog(project, "This opening exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
+                        }
+
+                        else if(isValid){
+                            setOfOpenings.add(opening);
                             opening.addMouseListener(new MouseAdapter() {
                                 @Override
                                 public void mouseClicked(MouseEvent e) {
@@ -826,23 +832,20 @@ public class Test extends JFrame{
                                     if (a == JOptionPane.YES_OPTION){
                                         setOfOpenings.remove(opening);
                                         furnitures.remove(opening);
-                                        finalLayer.add(setOfOpenings, Integer.valueOf(6));
+                                        finalLayer.add(setOfOpenings, Integer.valueOf(5));
                                     }
                                 }
                             });
                         }
-                        else if(opening.getX() < 0 || opening.getY() < 0 || opening.getX() + opening.getWidth() > 1500 || opening.getY() + opening.getX() > 600){
-                            JOptionPane.showMessageDialog(project, "This opening exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
-                        }
                         else {
                             JOptionPane.showMessageDialog(project, "Invalid placement of opening!", "Alert", JOptionPane.WARNING_MESSAGE);
+                         }
+                            finalLayer.add(setOfOpenings, Integer.valueOf(5));
                         }
-                            finalLayer.add(setOfOpenings, Integer.valueOf(6));
-                        }
-                    catch (NumberFormatException ex){
+                     catch (NumberFormatException ex){
                         //Shows a warning dialog box if the values entered aren't numeric
                         JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                    }
+                        }
                 }
             }
         });
@@ -862,7 +865,7 @@ public class Test extends JFrame{
         // bottomBlueStrip.setBackground(Color.blue);
         // bottomStrip.add(bottomBlueStrip);
 
-        // JLabel copyrightText = new JLabel("Copyright ©VARS");
+        // JLabel copyrightText = new JLabel("Copyright ©️VARS");
         // copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
         // copyrightText.setForeground(Color.WHITE);
         // copyrightText.setBounds(10, 860, 200, 20);
@@ -876,7 +879,7 @@ public class Test extends JFrame{
         // bottomBlueStrip.setOpaque(false);
         finalLayer.add(bottomBlueStrip);
 
-        JLabel copyrightText = new JLabel("Copyright ©VARS"); // not showing up - why??????
+        JLabel copyrightText = new JLabel("Copyright ©️VARS"); // not showing up - why??????
         copyrightText.setFont(new Font("Times New Roman", Font.BOLD, 12));
         copyrightText.setForeground(Color.WHITE);
         copyrightText.setBounds(10, 865, 500, 20);
