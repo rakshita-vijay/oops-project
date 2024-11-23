@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 ;
-//Updated on 23rd November, 11:53
+//Updated on 23rd November,13:20
 public class Grid extends JFrame {
     JFrame project = new JFrame();
 
@@ -65,7 +65,7 @@ public class Grid extends JFrame {
     public boolean forVertiWindow(JLabel window,ArrayList<Point[]>setOfBorders ){
         boolean isOn = false;
         for(int i=0;i<setOfBorders.size();i++){
-            if(window.getY()>setOfBorders.get(i)[1].getY() && (window.getY()+window.getHeight())<setOfBorders.get(i)[0].getY()&& window.getX()==setOfBorders.get(i)[0].getX() && setOfBorders.get(i)[0].getX()==setOfBorders.get(i)[1].getX()){
+            if(window.getY()<setOfBorders.get(i)[0].getY() && (window.getY()+window.getHeight())>setOfBorders.get(i)[1].getY()&& window.getX()==setOfBorders.get(i)[0].getX() && setOfBorders.get(i)[0].getX()==setOfBorders.get(i)[1].getX()){
                 isOn=true;
                 break;
             }
@@ -83,11 +83,12 @@ public class Grid extends JFrame {
         return isOn;
     }
 
-    public boolean forVertiDoor(JLabel door,ArrayList<Point[]> setOfEdges){
+    public boolean forVertiDoor(JLabel door,ArrayList<Point[]>setOfEdges ){
         boolean isOn = false;
         for(int i=0;i<setOfEdges.size();i++){
-            if(door.getY()>setOfEdges.get(i)[1].getY() && (door.getY()+ door.getWidth())<setOfEdges.get(i)[0].getY() && door.getX()==setOfEdges.get(i)[0].getX()&& setOfEdges.get(i)[0].getY()==setOfEdges.get(i)[1].getY()){
-                isOn = true;
+            if(door.getY()<setOfEdges.get(i)[0].getY() && (door.getY()+door.getHeight())>setOfEdges.get(i)[1].getY()&& door.getX()==setOfEdges.get(i)[0].getX() && setOfEdges.get(i)[0].getX()==setOfEdges.get(i)[1].getX()){
+                isOn=true;
+                break;
             }
         }
         return isOn;
@@ -162,6 +163,7 @@ public class Grid extends JFrame {
                 int selection = JOptionPane.showOptionDialog(project, "What would you like to do with this room?", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (selection == 0){
                     setOfRooms.remove(room);
+                    rooms.remove(room);
                     finalLayer.add(setOfRooms, Integer.valueOf(3));
                 }
                 if (selection == 1){
@@ -653,7 +655,7 @@ public class Grid extends JFrame {
                     default -> imageIcon;
                 };
                 int width = switch (selection) {
-                    case 0 -> 65;
+                    case 0 -> 55;
                     case 1 -> 85;
                     case 2 -> 20;
                     case 3 -> 65;
@@ -661,7 +663,7 @@ public class Grid extends JFrame {
                     default -> 65;
                 };
                 int height = switch (selection) {
-                    case 0 -> 40;
+                    case 0 -> 30;
                     case 1 -> 35;
                     case 2 -> 25;
                     case 3 -> 80;
