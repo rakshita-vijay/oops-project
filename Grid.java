@@ -1066,15 +1066,15 @@ public class Grid extends JFrame {
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        JPanel room1 = new JPanel();
-        room1.setBounds(0, 0, 100, 100);
-        room1.setBackground(Color.red);
-        room1.setBackground(new Color(100, 0, 0, 128));
-        room1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-        setOfRooms.add(room1);
-        rooms.add(room1);
-        deleteAndRelativeAdd(room1, rooms, furnitures, setOfRooms, finalLayer);
-        dragAndDrop(room1, rooms, furnitures);
+        // JPanel room1 = new JPanel();
+        // room1.setBounds(0, 0, 100, 100);
+        // room1.setBackground(Color.red);
+        // room1.setBackground(new Color(100, 0, 0, 128));
+        // room1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        // setOfRooms.add(room1);
+        // rooms.add(room1);
+        // deleteAndRelativeAdd(room1, rooms, furnitures, setOfRooms, finalLayer);
+        // dragAndDrop(room1, rooms, furnitures);
 
         finalLayer.add(setOfRooms, Integer.valueOf(3));
 
