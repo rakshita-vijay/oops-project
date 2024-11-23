@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 ;
-//Updated on 23rd November,13:20
+//Updated on 23rd November,13:30
 public class Grid extends JFrame {
     JFrame project = new JFrame();
 
@@ -83,7 +84,7 @@ public class Grid extends JFrame {
         return isOn;
     }
 
-    public boolean forVertiDoor(JLabel door,ArrayList<Point[]>setOfEdges ){
+    public boolean forVertiDoor(JLabel door,ArrayList<Point[]> setOfEdges){
         boolean isOn = false;
         for(int i=0;i<setOfEdges.size();i++){
             if(door.getY()<setOfEdges.get(i)[0].getY() && (door.getY()+door.getHeight())>setOfEdges.get(i)[1].getY()&& door.getX()==setOfEdges.get(i)[0].getX() && setOfEdges.get(i)[0].getX()==setOfEdges.get(i)[1].getX()){
@@ -344,7 +345,7 @@ public class Grid extends JFrame {
         nameText.setBounds(50, 10, 200, 20);
         topStrip.add(nameText, Integer.valueOf(1));
 
-        ImageIcon logo = new ImageIcon("images/image_blue.png");
+        ImageIcon logo = new ImageIcon("./images/image.png");
         JLabel logoLabel = new JLabel(logo);
         logoLabel.setBounds(10, 10, 20, 20);
         topStrip.add(logoLabel, Integer.valueOf(1));
@@ -644,14 +645,14 @@ public class Grid extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] furnitureList = {"Table", "Couch", "Chair", "Bed", "Dining Set"};
-                ImageIcon imageIcon = new ImageIcon("images/table.png");
+                ImageIcon imageIcon = new ImageIcon("./images/table.png");
                 int selection = JOptionPane.showOptionDialog(project, "Select the type of furniture you would like to add", "Furniture selector", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, furnitureList, furnitureList[0]);
                 imageIcon = switch (selection) {
-                    case 0 -> new ImageIcon("images/table.png");
-                    case 1 -> new ImageIcon("images/couch.png");
-                    case 2 -> new ImageIcon("images/chair.png");
-                    case 3 -> new ImageIcon("images/bed.png");
-                    case 4 -> new ImageIcon("images/dining_set.png");
+                    case 0 -> new ImageIcon("./images/table.png");
+                    case 1 -> new ImageIcon("./images/couch.png");
+                    case 2 -> new ImageIcon("./images/chair.png");
+                    case 3 -> new ImageIcon("./images/bed.png");
+                    case 4 -> new ImageIcon("./images/dining_set.png");
                     default -> imageIcon;
                 };
                 int width = switch (selection) {
@@ -812,14 +813,14 @@ public class Grid extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] fixtureList = {"Sink", "Commode", "Bathtub", "Stove", "Wash basin"};
-                ImageIcon imageIcon = new ImageIcon("images/sink.png");
+                ImageIcon imageIcon = new ImageIcon("./images/sink.png");
                 int selection = JOptionPane.showOptionDialog(project, "Select the type of fixture you would like to add", "Fixture selector", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, fixtureList, fixtureList[0]);
                 imageIcon = switch (selection) {
-                    case 0 -> new ImageIcon("images/sink.png");
-                    case 1 -> new ImageIcon("images/commode.png");
-                    case 2 -> new ImageIcon("images/bathtub.png");
-                    case 3 -> new ImageIcon("images/stove.png");
-                    case 4 -> new ImageIcon("images/washbasin.png");
+                    case 0 -> new ImageIcon("./images/sink.png");
+                    case 1 -> new ImageIcon("./images/commode.png");
+                    case 2 -> new ImageIcon("./images/bathtub.png");
+                    case 3 -> new ImageIcon("./images/stove.png");
+                    case 4 -> new ImageIcon("./images/washbasin.png");
                     default -> imageIcon;
                 };
                 int width = switch (selection) {
@@ -1077,7 +1078,7 @@ public class Grid extends JFrame {
 
         finalLayer.add(setOfRooms, Integer.valueOf(3));
 
-        ImageIcon imageIcon = new ImageIcon("images/dining_set.png");
+        ImageIcon imageIcon = new ImageIcon("./images/dining_set.png");
         Image image = imageIcon.getImage();
         Image resizedImage = image.getScaledInstance(55, 75, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
