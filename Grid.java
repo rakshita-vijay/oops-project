@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 ;
-//Updated on 22nd November, 22:02
+//Updated on 23rd November, 11:53
 public class Grid extends JFrame {
     JFrame project = new JFrame();
 
@@ -93,7 +93,200 @@ public class Grid extends JFrame {
         return isOn;
     }
 
+    public void dragAndDrop(JPanel newRoom, ArrayList<JPanel> rooms, ArrayList<JLabel> furnitures){
+        Point[] initialClick = {null};
+        final Point[] initialLocation = new Point[1];
 
+        newRoom.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                initialClick[0] = e.getPoint();
+                initialLocation[0] = newRoom.getLocation();
+            }
+        });
+
+        newRoom.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (initialClick[0] == null) return;
+
+                // Get the panel's current location
+                Point panelLocation = newRoom.getLocation();
+
+                // Calculate the new location
+                int newX = panelLocation.x + e.getX() - initialClick[0].x;
+                int newY = panelLocation.y + e.getY() - initialClick[0].y;
+
+                // Move the panel to the new location
+                newRoom.setLocation(newX, newY);
+            }
+        });
+
+        newRoom.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                boolean overlaps = false;
+                for(JPanel i : rooms){
+                    if (Overlap(i, newRoom) && i != newRoom){
+                        overlaps = true;
+                        break;
+                    }
+                }
+                if (overlaps){
+                    JOptionPane.showMessageDialog(project, "You cannot move your room here", "Alert", JOptionPane.WARNING_MESSAGE);
+                    newRoom.setLocation(initialLocation[0]);
+                } else {
+                    for (JLabel i : furnitures){
+                        if (Overlap(newRoom, i)){
+                            overlaps = true;
+                            break;
+                        }
+                    }
+                    if (overlaps) {
+                        JOptionPane.showMessageDialog(project, "This room overlaps with an already existing furniture item", "Alert", JOptionPane.WARNING_MESSAGE);
+                        newRoom.setLocation(initialLocation[0]);
+                    } else if (newRoom.getX() < 0 || newRoom.getY() < 0 || newRoom.getX() + newRoom.getWidth() > 1500 || newRoom.getY() + newRoom.getHeight() > 600){
+                        JOptionPane.showMessageDialog(project, "This room exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
+                        newRoom.setLocation(initialLocation[0]);
+                    }
+                }
+            }
+        });
+    }
+
+    public void deleteAndRelativeAdd(JPanel room, ArrayList<JPanel> rooms, ArrayList<JLabel> furnitures, JLayeredPane setOfRooms, JLayeredPane finalLayer){
+        room.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String[] options = {"Delete", "Add a room relative"};
+                int selection = JOptionPane.showOptionDialog(project, "What would you like to do with this room?", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (selection == 0){
+                    setOfRooms.remove(room);
+                    finalLayer.add(setOfRooms, Integer.valueOf(3));
+                }
+                if (selection == 1){
+                    JPanel newRoom = new JPanel();
+                    String[] directions = {"North", "East", "South", "West"};
+                    int a = JOptionPane.showOptionDialog(project, "Select the direction of the new room", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, directions, directions[0]);
+                    if (a == 0){
+                        JTextField height = new JTextField(5);
+                        height.setSize(50, 30);
+                        JPanel dialogPanel = new JPanel();
+                        dialogPanel.add(new JLabel("Height: "));
+                        dialogPanel.add(height);
+                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
+                        if (option == JOptionPane.OK_OPTION){
+                            try {
+                                newRoom.setBounds(room.getX(), room.getY() - Integer.parseInt(height.getText()), room.getWidth(), Integer.parseInt(height.getText()));
+                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+                            } catch (NumberFormatException ex){
+                                //Shows a warning dialog box if the values entered aren't numeric
+                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    }
+                    else if (a == 1){
+                        JTextField width = new JTextField(5);
+                        width.setSize(50, 30);
+                        JPanel dialogPanel = new JPanel();
+                        dialogPanel.add(new JLabel("Width: "));
+                        dialogPanel.add(width);
+                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
+                        if (option == JOptionPane.OK_OPTION){
+                            try {
+                                newRoom.setBounds(room.getX() + room.getWidth(), room.getY(), Integer.parseInt(width.getText()), room.getHeight());
+                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+                            } catch (NumberFormatException ex){
+                                //Shows a warning dialog box if the values entered aren't numeric
+                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    }
+                    else if (a == 2){
+                        JTextField height = new JTextField(5);
+                        height.setSize(50, 30);
+                        JPanel dialogPanel = new JPanel();
+                        dialogPanel.add(new JLabel("Height: "));
+                        dialogPanel.add(height);
+                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
+                        if (option == JOptionPane.OK_OPTION){
+                            try {
+                                newRoom.setBounds(room.getX(), room.getY() + room.getHeight(), room.getWidth(), Integer.parseInt(height.getText()));
+                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+                            } catch (NumberFormatException ex){
+                                //Shows a warning dialog box if the values entered aren't numeric
+                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    }
+                    else if (a == 3){
+                        JTextField width = new JTextField(5);
+                        width.setSize(50, 30);
+                        JPanel dialogPanel = new JPanel();
+                        dialogPanel.add(new JLabel("Width: "));
+                        dialogPanel.add(width);
+                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
+                        if (option == JOptionPane.OK_OPTION){
+                            try {
+                                newRoom.setBounds(room.getX() - Integer.parseInt(width.getText()), room.getY(), Integer.parseInt(width.getText()), room.getHeight());
+                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+                            } catch (NumberFormatException ex){
+                                //Shows a warning dialog box if the values entered aren't numeric
+                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    }
+                    String[] roomList = {"Living room", "Bedroom", "Kitchen", "Bathroom"};
+                    int c = JOptionPane.showOptionDialog(project, "Select the room you would like to add", "Room selector", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, roomList, roomList[0]);
+                    Color color = new Color(0, 100, 0, 128);
+                    //Setting the color of the room depending on what is selected by the user
+                    switch (c){
+                        case 0:
+                            break;
+                        case 1:
+                            color = new Color(100, 0, 0, 128);
+                            break;
+                        case 2:
+                            color = new Color(100, 100, 0, 128);
+                            break;
+                        case 3:
+                            color = new Color(0, 0, 100, 128);
+                            break;
+                    }
+                    newRoom.setBackground(color);
+                    boolean overlaps = false;
+                    //Iterates over every already existing room and checks for overlaps
+                    for(JPanel i : rooms){
+                        if (Overlap(i, newRoom)){
+                            overlaps = true;
+                            break;
+                        }
+                    }
+                    if (overlaps){
+                        JOptionPane.showMessageDialog(project, "This room overlaps with an already existing room", "Alert", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        for (JLabel i : furnitures){
+                            if (Overlap(newRoom, i)){
+                                overlaps = true;
+                                break;
+                            }
+                        }
+                        if (overlaps) {
+                            JOptionPane.showMessageDialog(project, "This room overlaps with an already existing furniture item", "Alert", JOptionPane.WARNING_MESSAGE);
+                        } else if (newRoom.getX() < 0 || newRoom.getY() < 0 || newRoom.getX() + newRoom.getWidth() > 1500 || newRoom.getY() + newRoom.getHeight() > 600){
+                            JOptionPane.showMessageDialog(project, "This room exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            setOfRooms.add(newRoom);
+                            rooms.add(newRoom);
+                            deleteAndRelativeAdd(newRoom, rooms, furnitures, setOfRooms, finalLayer);
+                            dragAndDrop(newRoom, rooms, furnitures);
+                            finalLayer.add(setOfRooms, Integer.valueOf(3));
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     Grid() {
         project.setTitle("Grid"); // title of the JFrame
@@ -402,191 +595,8 @@ public class Grid extends JFrame {
                             //Shows a warning dialog box if the values entered aren't numeric
                             JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
                         }
-                        Point[] initialClick = {null};
-                        final Point[] initialLocation = new Point[1];
-                        newRoom.addMouseListener(new MouseAdapter() {
-                            @Override
-                            public void mousePressed(MouseEvent e) {
-                                initialClick[0] = e.getPoint();
-                                initialLocation[0] = newRoom.getLocation();
-                            }
-
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                                String[] options = {"Delete", "Add a room relative"};
-                                int selection = JOptionPane.showOptionDialog(project, "What would you like to do with this room?", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                                if (selection == 0){
-                                    setOfRooms.remove(newRoom);
-                                    finalLayer.add(setOfRooms, Integer.valueOf(3));
-                                }
-                                if (selection == 1){
-                                    JPanel newerRoom = new JPanel();
-                                    String[] directions = {"North", "East", "South", "West"};
-                                    int a = JOptionPane.showOptionDialog(project, "Select the direction of the new room", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, directions, directions[0]);
-                                    if (a == 0){
-                                        JTextField height = new JTextField(5);
-                                        height.setSize(50, 30);
-                                        JPanel dialogPanel = new JPanel();
-                                        dialogPanel.add(new JLabel("Height: "));
-                                        dialogPanel.add(height);
-                                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
-                                        if (option == JOptionPane.OK_OPTION){
-                                            try {
-                                                newerRoom.setBounds(newRoom.getX(), newRoom.getY() - Integer.parseInt(height.getText()), newRoom.getWidth(), Integer.parseInt(height.getText()));
-                                                newerRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                                            } catch (NumberFormatException ex){
-                                                //Shows a warning dialog box if the values entered aren't numeric
-                                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                                            }
-                                        }
-                                    }
-                                    else if (a == 1){
-                                        JTextField width = new JTextField(5);
-                                        width.setSize(50, 30);
-                                        JPanel dialogPanel = new JPanel();
-                                        dialogPanel.add(new JLabel("Width: "));
-                                        dialogPanel.add(width);
-                                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
-                                        if (option == JOptionPane.OK_OPTION){
-                                            try {
-                                                newerRoom.setBounds(newRoom.getX() + newRoom.getWidth(), newRoom.getY(), Integer.parseInt(width.getText()), newRoom.getHeight());
-                                                newerRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                                            } catch (NumberFormatException ex){
-                                                //Shows a warning dialog box if the values entered aren't numeric
-                                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                                            }
-                                        }
-                                    }
-                                    else if (a == 2){
-                                        JTextField height = new JTextField(5);
-                                        height.setSize(50, 30);
-                                        JPanel dialogPanel = new JPanel();
-                                        dialogPanel.add(new JLabel("Height: "));
-                                        dialogPanel.add(height);
-                                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
-                                        if (option == JOptionPane.OK_OPTION){
-                                            try {
-                                                newerRoom.setBounds(newRoom.getX(), newRoom.getY() + newRoom.getHeight(), newRoom.getWidth(), Integer.parseInt(height.getText()));
-                                                newerRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                                            } catch (NumberFormatException ex){
-                                                //Shows a warning dialog box if the values entered aren't numeric
-                                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                                            }
-                                        }
-                                    }
-                                    else if (a == 3){
-                                        JTextField width = new JTextField(5);
-                                        width.setSize(50, 30);
-                                        JPanel dialogPanel = new JPanel();
-                                        dialogPanel.add(new JLabel("Width: "));
-                                        dialogPanel.add(width);
-                                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
-                                        if (option == JOptionPane.OK_OPTION){
-                                            try {
-                                                newerRoom.setBounds(newRoom.getX() - Integer.parseInt(width.getText()), newRoom.getY(), Integer.parseInt(width.getText()), newRoom.getHeight());
-                                                newerRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                                            } catch (NumberFormatException ex){
-                                                //Shows a warning dialog box if the values entered aren't numeric
-                                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                                            }
-                                        }
-                                    }
-                                    String[] roomList = {"Living room", "Bedroom", "Kitchen", "Bathroom"};
-                                    int c = JOptionPane.showOptionDialog(project, "Select the room you would like to add", "Room selector", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, roomList, roomList[0]);
-                                    Color color = new Color(0, 100, 0, 128);
-                                    //Setting the color of the room depending on what is selected by the user
-                                    switch (c){
-                                        case 0:
-                                            break;
-                                        case 1:
-                                            color = new Color(100, 0, 0, 128);
-                                            break;
-                                        case 2:
-                                            color = new Color(100, 100, 0, 128);
-                                            break;
-                                        case 3:
-                                            color = new Color(0, 0, 100, 128);
-                                            break;
-                                    }
-                                    newerRoom.setBackground(color);
-                                    boolean overlaps = false;
-                                    //Iterates over every already existing room and checks for overlaps
-                                    for(JPanel i : rooms){
-                                        if (Overlap(i, newerRoom)){
-                                            overlaps = true;
-                                            break;
-                                        }
-                                    }
-                                    if (overlaps){
-                                        JOptionPane.showMessageDialog(project, "This room overlaps with an already existing room", "Alert", JOptionPane.WARNING_MESSAGE);
-                                    } else {
-                                        for (JLabel i : furnitures){
-                                            if (Overlap(newerRoom, i)){
-                                                overlaps = true;
-                                                break;
-                                            }
-                                        }
-                                        if (overlaps) {
-                                            JOptionPane.showMessageDialog(project, "This room overlaps with an already existing furniture item", "Alert", JOptionPane.WARNING_MESSAGE);
-                                        } else if (newerRoom.getX() < 0 || newerRoom.getY() < 0 || newerRoom.getX() + newerRoom.getWidth() > 1500 || newerRoom.getY() + newerRoom.getHeight() > 600){
-                                            JOptionPane.showMessageDialog(project, "This room exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
-                                        } else {
-                                            setOfRooms.add(newerRoom);
-                                            rooms.add(newerRoom);
-                                            finalLayer.add(setOfRooms, Integer.valueOf(3));
-                                        }
-                                    }
-                                }
-                            }
-                        });
-
-                        newRoom.addMouseMotionListener(new MouseAdapter() {
-                            @Override
-                            public void mouseDragged(MouseEvent e) {
-                                if (initialClick[0] == null) return;
-
-                                // Get the panel's current location
-                                Point panelLocation = newRoom.getLocation();
-
-                                // Calculate the new location
-                                int newX = panelLocation.x + e.getX() - initialClick[0].x;
-                                int newY = panelLocation.y + e.getY() - initialClick[0].y;
-
-                                // Move the panel to the new location
-                                newRoom.setLocation(newX, newY);
-                            }
-                        });
-
-                        newRoom.addMouseListener(new MouseAdapter() {
-                            @Override
-                            public void mouseReleased(MouseEvent e) {
-                                boolean overlaps = false;
-                                for(JPanel i : rooms){
-                                    if (Overlap(i, newRoom) && i != newRoom){
-                                        overlaps = true;
-                                        break;
-                                    }
-                                }
-                                if (overlaps){
-                                    JOptionPane.showMessageDialog(project, "You cannot move your room here", "Alert", JOptionPane.WARNING_MESSAGE);
-                                    newRoom.setLocation(initialLocation[0]);
-                                } else {
-                                    for (JLabel i : furnitures){
-                                        if (Overlap(newRoom, i)){
-                                            overlaps = true;
-                                            break;
-                                        }
-                                    }
-                                    if (overlaps) {
-                                        JOptionPane.showMessageDialog(project, "This room overlaps with an already existing furniture item", "Alert", JOptionPane.WARNING_MESSAGE);
-                                        newRoom.setLocation(initialLocation[0]);
-                                    } else if (newRoom.getX() < 0 || newRoom.getY() < 0 || newRoom.getX() + newRoom.getWidth() > 1500 || newRoom.getY() + newRoom.getHeight() > 600){
-                                        JOptionPane.showMessageDialog(project, "This room exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
-                                        newRoom.setLocation(initialLocation[0]);
-                                    }
-                                }
-                            }
-                        });
+                        deleteAndRelativeAdd(newRoom, rooms, furnitures, setOfRooms, finalLayer);
+                        dragAndDrop(newRoom, rooms, furnitures);
                     }
                 }
             }
@@ -1060,135 +1070,8 @@ public class Grid extends JFrame {
         room1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         setOfRooms.add(room1);
         rooms.add(room1);
-        room1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String[] options = {"Delete", "Add a room relative"};
-                int selection = JOptionPane.showOptionDialog(project, "What would you like to do with this room?", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (selection == 0){
-                    setOfRooms.remove(room1);
-                    finalLayer.add(setOfRooms, Integer.valueOf(3));
-                }
-                if (selection == 1){
-                    JPanel newRoom = new JPanel();
-                    String[] directions = {"North", "East", "South", "West"};
-                    int a = JOptionPane.showOptionDialog(project, "Select the direction of the new room", "Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, directions, directions[0]);
-                    if (a == 0){
-                        JTextField height = new JTextField(5);
-                        height.setSize(50, 30);
-                        JPanel dialogPanel = new JPanel();
-                        dialogPanel.add(new JLabel("Height: "));
-                        dialogPanel.add(height);
-                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION){
-                            try {
-                                newRoom.setBounds(room1.getX(), room1.getY() - Integer.parseInt(height.getText()), room1.getWidth(), Integer.parseInt(height.getText()));
-                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                            } catch (NumberFormatException ex){
-                                //Shows a warning dialog box if the values entered aren't numeric
-                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    }
-                    else if (a == 1){
-                        JTextField width = new JTextField(5);
-                        width.setSize(50, 30);
-                        JPanel dialogPanel = new JPanel();
-                        dialogPanel.add(new JLabel("Width: "));
-                        dialogPanel.add(width);
-                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION){
-                            try {
-                                newRoom.setBounds(room1.getX() + room1.getWidth(), room1.getY(), Integer.parseInt(width.getText()), room1.getHeight());
-                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                            } catch (NumberFormatException ex){
-                                //Shows a warning dialog box if the values entered aren't numeric
-                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    }
-                    else if (a == 2){
-                        JTextField height = new JTextField(5);
-                        height.setSize(50, 30);
-                        JPanel dialogPanel = new JPanel();
-                        dialogPanel.add(new JLabel("Height: "));
-                        dialogPanel.add(height);
-                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the height of your room", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION){
-                            try {
-                                newRoom.setBounds(room1.getX(), room1.getY() + room1.getHeight(), room1.getWidth(), Integer.parseInt(height.getText()));
-                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                            } catch (NumberFormatException ex){
-                                //Shows a warning dialog box if the values entered aren't numeric
-                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    }
-                    else if (a == 3){
-                        JTextField width = new JTextField(5);
-                        width.setSize(50, 30);
-                        JPanel dialogPanel = new JPanel();
-                        dialogPanel.add(new JLabel("Width: "));
-                        dialogPanel.add(width);
-                        int option = JOptionPane.showConfirmDialog(null, dialogPanel, "Please enter the width of your room", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION){
-                            try {
-                                newRoom.setBounds(room1.getX() - Integer.parseInt(width.getText()), room1.getY(), Integer.parseInt(width.getText()), room1.getHeight());
-                                newRoom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-                            } catch (NumberFormatException ex){
-                                //Shows a warning dialog box if the values entered aren't numeric
-                                JOptionPane.showMessageDialog(project, "Please enter numeric values!", "Alert", JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    }
-                    String[] roomList = {"Living room", "Bedroom", "Kitchen", "Bathroom"};
-                    int c = JOptionPane.showOptionDialog(project, "Select the room you would like to add", "Room selector", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, roomList, roomList[0]);
-                    Color color = new Color(0, 100, 0, 128);
-                    //Setting the color of the room depending on what is selected by the user
-                    switch (c){
-                        case 0:
-                            break;
-                        case 1:
-                            color = new Color(100, 0, 0, 128);
-                            break;
-                        case 2:
-                            color = new Color(100, 100, 0, 128);
-                            break;
-                        case 3:
-                            color = new Color(0, 0, 100, 128);
-                            break;
-                    }
-                    newRoom.setBackground(color);
-                    boolean overlaps = false;
-                    //Iterates over every already existing room and checks for overlaps
-                    for(JPanel i : rooms){
-                        if (Overlap(i, newRoom)){
-                            overlaps = true;
-                            break;
-                        }
-                    }
-                    if (overlaps){
-                        JOptionPane.showMessageDialog(project, "This room overlaps with an already existing room", "Alert", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        for (JLabel i : furnitures){
-                            if (Overlap(newRoom, i)){
-                                overlaps = true;
-                                break;
-                            }
-                        }
-                        if (overlaps) {
-                            JOptionPane.showMessageDialog(project, "This room overlaps with an already existing furniture item", "Alert", JOptionPane.WARNING_MESSAGE);
-                        } else if (newRoom.getX() < 0 || newRoom.getY() < 0 || newRoom.getX() + newRoom.getWidth() > 1500 || newRoom.getY() + newRoom.getHeight() > 600){
-                            JOptionPane.showMessageDialog(project, "This room exceeds the bounds of the floor ((0, 0) to (1500, 600))", "Alert", JOptionPane.WARNING_MESSAGE);
-                        } else {
-                            setOfRooms.add(newRoom);
-                            rooms.add(newRoom);
-                            finalLayer.add(setOfRooms, Integer.valueOf(3));
-                        }
-                    }
-                }
-            }
-        });
+        deleteAndRelativeAdd(room1, rooms, furnitures, setOfRooms, finalLayer);
+        dragAndDrop(room1, rooms, furnitures);
 
         finalLayer.add(setOfRooms, Integer.valueOf(3));
 
