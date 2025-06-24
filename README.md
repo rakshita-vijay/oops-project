@@ -226,7 +226,7 @@ This comprehensive floor planning application demonstrates the power of well-str
 
 ## 9. About & Contributors
 Developed as part of the Object Oriented Programming course (CS F213) at BITS Pilani Hyderabad Campus.
-Contributors:
+<br>Contributors:
 - Rakshita Vijay (rakshita-vijay)
 - Sai Vasisht Bhethanabottla (bethuunltd)
 - Shobhit Arya
