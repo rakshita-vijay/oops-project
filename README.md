@@ -223,3 +223,13 @@ The application serves multiple use cases effectively:
 This comprehensive floor planning application demonstrates the power of well-structured Java development, combining sophisticated geometric calculations with intuitive user interaction to create a practical tool for spatial design and visualization. 
 
 ---
+
+## 9. About & Contributors
+Developed as part of the Object Oriented Programming course (CS F213) at BITS Pilani Hyderabad Campus.
+Contributors:
+- Rakshita Vijay (rakshita-vijay)
+- Sai Vasisht Bhethanabottla (bethuunltd)
+- Shobhit Arya
+- Aditya Renake (adishashi)
+
+---
