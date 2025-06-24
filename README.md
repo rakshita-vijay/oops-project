@@ -1,12 +1,12 @@
 # Heim & Leben - Interactive Floor Planning Application
 
-A comprehensive Java-based floor planning application that enables users to design and visualize residential floor plans through an intuitive drag-and-drop interface[1][2]. Built with Java Swing, this application provides a complete toolkit for creating detailed floor plans with rooms, furniture, fixtures, and architectural openings.
+A comprehensive Java-based floor planning application that enables users to design and visualize residential floor plans through an intuitive drag-and-drop interface. Built with Java Swing, this application provides a complete toolkit for creating detailed floor plans with rooms, furniture, fixtures, and architectural openings.
 
 ---
 
 ## 1. Project Overview
 
-Heim & Leben (German for "Home & Life") is a desktop application designed to simplify the process of floor plan creation and interior design visualization[2]. The application combines the precision of grid-based placement with the flexibility of free-form design, allowing users to create detailed floor plans that accurately represent their living spaces.
+Heim & Leben (German for "Home & Life") is a desktop application designed to simplify the process of floor plan creation and interior design visualization. The application combines the precision of grid-based placement with the flexibility of free-form design, allowing users to create detailed floor plans that accurately represent their living spaces.
 
 The project demonstrates object-oriented programming principles while delivering a practical tool for homeowners, interior designers, and architects who need to visualize spatial arrangements before implementation.
 
@@ -14,20 +14,20 @@ The project demonstrates object-oriented programming principles while delivering
 
 ## 2. Technology Stack and Language
 
-The application is built entirely in **Java**, leveraging the robust Swing framework for GUI development[2]. This choice provides several advantages:
+The application is built entirely in **Java**, leveraging the robust Swing framework for GUI development. This choice provides several advantages:
 
   - **Platform Independence**: Runs on any system with Java Runtime Environment
   - **Rich GUI Components**: Utilizes Swing's comprehensive widget library
   - **Event-Driven Architecture**: Implements responsive user interactions through event listeners
   - **Layered Rendering**: Uses JLayeredPane for sophisticated visual layering of components
 
-The codebase follows Java best practices with clear method separation, proper exception handling, and comprehensive user input validation[2].
+The codebase follows Java best practices with clear method separation, proper exception handling, and comprehensive user input validation.
 
 ---
 
 ## 3. Repository Structure
 
-The project maintains a clean, organized structure that separates code from assets effectively[1][3]:
+The project maintains a clean, organized structure that separates code from assets effectively:
 
 ```
 oops-project/
@@ -63,7 +63,7 @@ oops-project/
 
 ## 4. Core Architecture and Design Highlights
 
-The application employs a sophisticated multi-layered architecture that enables complex visual interactions while maintaining code clarity[2]:
+The application employs a sophisticated multi-layered architecture that enables complex visual interactions while maintaining code clarity:
 
 ### 4.1 Layered Rendering System
 
@@ -75,7 +75,7 @@ The application employs a sophisticated multi-layered architecture that enables 
 
 ### 4.2 Event-Driven Interaction Model
 
-The application implements comprehensive mouse event handling for intuitive user interaction[2]:
+The application implements comprehensive mouse event handling for intuitive user interaction:
 
   - **Mouse Press Events**: Capture initial click positions for drag operations
   - **Mouse Drag Events**: Enable real-time object movement with visual feedback
@@ -84,7 +84,7 @@ The application implements comprehensive mouse event handling for intuitive user
 
 ### 4.3 Geometric Collision Detection
 
-The codebase includes sophisticated overlap detection algorithms that handle multiple scenarios[2]:
+The codebase includes sophisticated overlap detection algorithms that handle multiple scenarios:
 
   - **Room-to-Room Overlap**: Prevents rooms from intersecting using Rectangle.intersects()
   - **Furniture-to-Room Overlap**: Ensures furniture placement within room boundaries
@@ -97,7 +97,7 @@ The codebase includes sophisticated overlap detection algorithms that handle mul
 
 ### 5.1 Room Management System
 
-The application supports four distinct room types, each with unique visual characteristics[2]:
+The application supports four distinct room types, each with unique visual characteristics:
 
   - **Living Room**: Green translucent overlay (0, 100, 0, 128)
   - **Bedroom**: Red translucent overlay (100, 0, 0, 128)
@@ -112,7 +112,7 @@ The application supports four distinct room types, each with unique visual chara
 
 ### 5.2 Furniture and Fixture Library
 
-The application includes a comprehensive catalog of furniture and fixtures with realistic dimensions[2]:
+The application includes a comprehensive catalog of furniture and fixtures with realistic dimensions:
 
 **Furniture Collection**:
   - **Table**: 55x30 pixels - Perfect for dining or work surfaces
@@ -130,7 +130,7 @@ The application includes a comprehensive catalog of furniture and fixtures with 
 
 ### 5.3 Architectural Openings System
 
-The application features a sophisticated door and window placement system that validates proper wall attachment[2]:
+The application features a sophisticated door and window placement system that validates proper wall attachment:
 
 **Opening Types**:
   - **Horizontal Doors**: 20x4 pixels - For standard wall openings
@@ -149,7 +149,7 @@ The application features a sophisticated door and window placement system that v
 
 ### 6.1 Intelligent Interaction Design
 
-The application prioritizes user experience through thoughtful interaction patterns[2]:
+The application prioritizes user experience through thoughtful interaction patterns:
 
   - **Visual Feedback**: Real-time visual updates during drag operations
   - **Error Prevention**: Comprehensive validation prevents invalid placements
@@ -165,7 +165,7 @@ The application prioritizes user experience through thoughtful interaction patte
 
 ### 6.3 Dynamic Asset Management
 
-The application dynamically loads and scales images based on object type[2]:
+The application dynamically loads and scales images based on object type:
 
   - **Automatic Scaling**: Images are resized to appropriate dimensions using SCALE_SMOOTH
   - **Memory Efficiency**: Images are loaded on-demand rather than preloaded
@@ -177,7 +177,7 @@ The application dynamically loads and scales images based on object type[2]:
 
 ### 7.1 Method Structure and Responsibilities
 
-The Grid.java file demonstrates excellent separation of concerns[2]:
+The Grid.java file demonstrates excellent separation of concerns:
 
   - **Overlap Detection Methods**: Dedicated methods for different collision scenarios
   - **Event Handler Methods**: Separate methods for drag-and-drop, deletion, and relative addition
@@ -193,7 +193,7 @@ The Grid.java file demonstrates excellent separation of concerns[2]:
 
 ### 7.3 Extensibility and Maintainability
 
-The codebase structure supports easy extension[2]:
+The codebase structure supports easy extension:
 
   - **Modular Design**: New furniture types can be added by extending existing patterns
   - **Asset Integration**: New images can be incorporated through the existing loading system
